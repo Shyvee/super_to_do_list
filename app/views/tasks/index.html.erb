@@ -1,0 +1,122 @@
+<div class="page-header">
+  <h1>
+    Tasks
+    <a href="/tasks/new" class="btn btn-lg btn-success"><i class="fa fa-plus"></i></a>
+  </h1>
+</div>
+
+<!-- Responsive, Isotope-based layout example -->
+
+<div class="row">
+  <div class="col-xs-12">
+    <input type="text" id="quicksearch" placeholder="Search Tasks (start typing)" class="form-control">
+  </div>
+</div>
+
+<hr>
+
+<div class="row isotope-container">
+  <% @tasks.each do |task| %>
+    <% if task.user_id == current_user.id %>
+
+    <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3 isotope-item">
+     <div class="panel panel-default">
+          <div class="panel-heading">
+           <% if task.high_priority == true %>
+            <h3 class="panel-title"><font color="red">Task #<%= task.id %></font></h3>
+          <% else %>
+            <h3 class="panel-title">Task #<%= task.id %></h3>
+          <% end %>
+        </div>
+
+      <div class="panel-body">
+      <dl>
+        <dt>Task Name</dt>
+        <dd><%= task.task_name %></dd>
+
+        <dt>High Priority</dt>
+        <dd><% if task.high_priority == true %> <p>Yes</p>
+        <% else %> <p>No</p>
+         <% end %>
+        </dd>
+
+        <dt>Category</dt>
+        <dd><%= task.category.try(:category_name) %></dd>
+
+        <% if task.due_date != nil %>
+        <dt>Due date</dt>
+        <dd><%= task.due_date.strftime('%B %e, %Y at %l:%M%P')  %></dd>
+        <% else %>
+        <% end %>
+
+        <dt>Notes</dt>
+        <dd><%= task.notes %></dd>
+      </dl>
+
+      <a href="/tasks/<%= task.id %>" class="btn btn-primary">
+       <i class="fa fa-search-plus"></i>
+      </a>
+
+      <a href="/tasks/<%= task.id %>/edit" class="btn btn-warning">
+       <i class="fa fa-edit"></i>
+      </a>
+
+      <a href="/delete_task/<%= task.id %>" class="btn btn-danger" rel="nofollow">
+         <i class="fa fa-trash-o"></i>
+      </a>
+  </div>
+</div>
+</div>
+<% end %>
+<% end %>
+</div>
+
+</hr>
+
+<!-- You can ignore the following. It's a quick and dirty example of how to get a Pinterest-style layout with quick search. -->
+<!-- JavaScript for Isotope layout and quicksearch -->
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery.imagesloaded/3.1.8/imagesloaded.pkgd.min.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery.isotope/2.0.0/isotope.pkgd.min.js"></script>
+<script>
+  $(function() {
+    // quick search regex
+    var qsRegex;
+
+    // init Isotope
+    var $container = $('.isotope-container');
+
+    $container.imagesLoaded(function() {
+      $container.isotope({
+        itemSelector: '.isotope-item',
+        layoutMode: 'masonry',
+        filter: function() {
+          return qsRegex ? $(this).text().match( qsRegex ) : true;
+        }
+      })
+    });
+
+    // use value of search field to filter
+    var $quicksearch = $('#quicksearch').keyup( debounce( function() {
+      qsRegex = new RegExp( $quicksearch.val(), 'gi' );
+      $container.isotope();
+    }, 200 ) );
+
+  });
+
+  // debounce so filtering doesn't happen every millisecond
+  function debounce( fn, threshold ) {
+    var timeout;
+    return function debounced() {
+      if ( timeout ) {
+        clearTimeout( timeout );
+      }
+      function delayed() {
+        fn();
+        timeout = null;
+      }
+      timeout = setTimeout( delayed, threshold || 100 );
+    }
+  }
+</script>
+
+<!-- End responsive, Isotope-based layout example -->

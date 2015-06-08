@@ -1,0 +1,109 @@
+<!-- Responsive panel example-->
+
+<div class="row">
+  <div class="col-sm-offset-1 col-sm-10 col-md-offset-2 col-md-8">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h3 class="panel-title">Category #<%= @category.id %></h3>
+      </div>
+      <div class="panel-body">
+        <div class="row">
+          <div class="col-md-12">
+            <dl class="dl-horizontal">
+              <dt>Category Name</dt>
+              <dd><%= @category.category_name %></dd>
+
+              <!-- <dt>Category color</dt>
+              <dd><%= @category.category_color %></dd>
+
+              <dt>User</dt>
+              <dd><%= @category.user_id %></dd> -->
+
+            </dl>
+            <div class="btn-group btn-group-justified">
+              <a href="/categories" class="btn btn-primary">
+                <i class="fa fa-chevron-left"></i>
+              </a>
+
+              <a href="/categories/<%= @category.id %>/edit" class="btn btn-warning">
+                <i class="fa fa-edit"></i>
+              </a>
+
+              <a href="/delete_category/<%= @category.id %>" class="btn btn-danger" rel="nofollow">
+                <i class="fa fa-trash-o"></i>
+              </a>
+
+            </div>
+            <ul class="list-group">
+              <% @category.tasks.each do |task| %>
+              <li class="list-group-item">
+                <%= task.task_name %>
+              </li>
+              <% end %>
+
+  <li class="list-group-item">
+
++
++          <!-- Responsive panel example -->
++
++          <div class="row">
++            <div class="col-sm-offset-1 col-sm-10 col-md-offset-2 col-md-8">
++              <div class="panel panel-default">
++                <div class="panel-heading">
++                  <h3 class="panel-title">Add Task</h3>
++                </div>
++                <div class="panel-body">
++                  <form action="/create_task" method="post" class="form-horizontal">
++                    <!-- Hidden input for authenticity token to protect from forgery -->
++                    <input name="authenticity_token" type="hidden" value="<%= form_authenticity_token %>">
++
++                    <!-- Label and input for name -->
++                    <div class="form-group">
++                      <label for="name" class="col-sm-2 control-label">
++                        Task Name
++                      </label>
++                      <div class="col-sm-10">
++                        <input type="text" id="name" name="name" placeholder="Name" class="form-control" value="<%= @task.name %>">
++                      </div>
++                    </div>
++
++                    <!-- Label and input for address -->
++                   <!--  <div class="form-group">
++                      <label for="address" class="col-sm-2 control-label">
++                        Address
++                      </label>
++                      <div class="col-sm-10">
++                        <input type="text" id="address" name="address" placeholder="Address" class="form-control" value="<%= @venue.address %>">
++                      </div>
++                    </div> -->
++
++                    <input type="hidden" name="category_id" value="<%= @category.id %>">
++
++                    <div class="form-group">
++                      <div class="col-sm-offset-2 col-sm-10">
++                        <button class="btn btn-success">
++                          Create Category
++                        </button>
++                        or
++                        <a href="/category">Cancel</a>
++                      </div>
++                    </div>
++                  </form>
++                </div>
++              </div>
++            </div>
++          </div>
++
++          <!-- End responsive panel example -->
++
++        </li>
+
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- End responsive panel example -->

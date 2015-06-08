@@ -1,0 +1,60 @@
+<!-- Responsive panel example-->
+
+<div class="row">
+  <div class="col-sm-offset-1 col-sm-10 col-md-offset-2 col-md-8">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+         <% if @task.high_priority == true %>
+            <h3 class="panel-title"><font color="red">Task #<%= @task.id %></font></h3>
+          <% else %>
+            <h3 class="panel-title">Task #<%= @task.id %></h3>
+          <% end %>
+        </div>
+      <div class="panel-body">
+        <div class="row">
+          <div class="col-md-12">
+            <dl class="dl-horizontal">
+
+              <dt>Task</dt>
+              <dd><%= @task.task_name %></dd>
+
+              <% if @task.due_date != nil %>
+              <dt>Due date</dt>
+              <dd><%= @task.due_date.strftime('%B %e, %Y at %l:%M%P')  %></dd>
+              <% else %>
+              <% end %>
+
+              <dt>High Priority</dt>
+              <dd><%= @task.high_priority %></dd>
+
+              <dt>Category</dt>
+              <dd><%= @task.category.try(:category_name) %></dd>
+
+              <dt>Notes</dt>
+              <dd><%= @task.notes %></dd>
+
+               <dt>Created at</dt>
+              <dd><%= time_ago_in_words(@task.created_at) %> ago</dd>
+
+            </dl>
+            <div class="btn-group btn-group-justified">
+              <a href="/tasks" class="btn btn-primary">
+                <i class="fa fa-chevron-left"></i>
+              </a>
+
+              <a href="/tasks/<%= @task.id %>/edit" class="btn btn-warning">
+                <i class="fa fa-edit"></i>
+              </a>
+
+              <a href="/delete_task/<%= @task.id %>" class="btn btn-danger" rel="nofollow">
+                <i class="fa fa-trash-o"></i>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- End responsive panel example -->
