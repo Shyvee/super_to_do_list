@@ -23,16 +23,14 @@
      <div class="panel panel-default">
           <div class="panel-heading">
            <% if task.high_priority == true %>
-            <h3 class="panel-title"><font color="red">Task #<%= task.id %></font></h3>
+            <h3 class="panel-title"><font color="red"><b><%= task.task_name %></b></font></h3>
           <% else %>
-            <h3 class="panel-title">Task #<%= task.id %></h3>
+            <h3 class="panel-title"><b><%= task.task_name %></b></h3>
           <% end %>
         </div>
 
       <div class="panel-body">
       <dl>
-        <dt>Task Name</dt>
-        <dd><%= task.task_name %></dd>
 
         <dt>High Priority</dt>
         <dd><% if task.high_priority == true %> <p>Yes</p>
@@ -43,11 +41,18 @@
         <dt>Category</dt>
         <dd><%= task.category.try(:category_name) %></dd>
 
-        <% if task.due_date != nil %>
+
         <dt>Due date</dt>
-        <dd><%= task.due_date.strftime('%B %e, %Y at %l:%M%P')  %></dd>
-        <% else %>
+        <% if task.due_date != nil %>
+        <dd>
+          <%= task.due_date.strftime('%B %e, %Y at %l:%M%P')  %>
+          <% if task.due_date < Time.now %>
+           <p><font color="red"><b>Overdue</b></font></p>
+          <% end %>
+
+        </dd>
         <% end %>
+
 
         <dt>Notes</dt>
         <dd><%= task.notes %></dd>

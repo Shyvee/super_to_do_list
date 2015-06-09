@@ -45,12 +45,11 @@ class TasksController < ApplicationController
   def update
     @task = Task.find(params[:id])
 
-    @task.due_date = params[:due_date]
+    @task.due_date = Chronic.parse(params[:due_date])
     @task.task_name = params[:task_name]
     @task.due_time = params[:due_time]
     @task.complete = params[:complete]
     @task.row_order = params[:row_order]
-    @task.user_id = params[:user_id]
     @task.notes = params[:notes]
     @task.high_priority = params[:high_priority]
     @task.category_id = params[:category_id]

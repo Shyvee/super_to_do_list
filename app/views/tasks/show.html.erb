@@ -20,8 +20,11 @@
 
               <% if @task.due_date != nil %>
               <dt>Due date</dt>
-              <dd><%= @task.due_date.strftime('%B %e, %Y at %l:%M%P')  %></dd>
-              <% else %>
+              <dd><%= @task.due_date.strftime('%B %e, %Y at %l:%M%P')  %>
+               <% if @task.due_date < Time.now %>
+           <p><font color="red"><b>Overdue</b></font></p>
+          <% end %>
+          </dd>
               <% end %>
 
               <dt>High Priority</dt>
