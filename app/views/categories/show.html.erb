@@ -12,13 +12,6 @@
             <dl class="dl-horizontal">
               <dt>Category Name</dt>
               <dd><%= @category.category_name %></dd>
-
-              <!-- <dt>Category color</dt>
-              <dd><%= @category.category_color %></dd>
-
-              <dt>User</dt>
-              <dd><%= @category.user_id %></dd> -->
-
             </dl>
             <div class="btn-group btn-group-justified">
               <a href="/categories" class="btn btn-primary">
@@ -35,75 +28,108 @@
 
             </div>
             <ul class="list-group">
-              <% @category.tasks.each do |task| %>
-              <li class="list-group-item">
-                <%= task.task_name %>
-              </li>
+            <% @category.tasks.each do |task| %>
+              <% if task.user_id == current_user.id %>
+                <li class="list-group-item">
+                 <%= task.task_name %>
+                </li>
+              <% else %>
               <% end %>
+            <% end %>
 
-  <li class="list-group-item">
+              <li class="list-group-item">
+                <div class="row">
+                  <div class="col-sm-offset-1 col-sm-10 col-md-offset-2 col-md-8">
+                    <div class="panel panel-default">
+                      <div class="panel-heading">
+                        <h3 class="panel-title">Add Task</h3>
+                      </div>
+                      <div class="panel-body">
+                        <form action="/create_task" method="post" class="form-horizontal">
+                          <!-- Hidden input for authenticity token to protect from forgery -->
+                          <input name="authenticity_token" type="hidden" value="<%= form_authenticity_token %>">
 
-+
-+          <!-- Responsive panel example -->
-+
-+          <div class="row">
-+            <div class="col-sm-offset-1 col-sm-10 col-md-offset-2 col-md-8">
-+              <div class="panel panel-default">
-+                <div class="panel-heading">
-+                  <h3 class="panel-title">Add Task</h3>
-+                </div>
-+                <div class="panel-body">
-+                  <form action="/create_task" method="post" class="form-horizontal">
-+                    <!-- Hidden input for authenticity token to protect from forgery -->
-+                    <input name="authenticity_token" type="hidden" value="<%= form_authenticity_token %>">
-+
-+                    <!-- Label and input for name -->
-+                    <div class="form-group">
-+                      <label for="name" class="col-sm-2 control-label">
-+                        Task Name
-+                      </label>
-+                      <div class="col-sm-10">
-+                        <input type="text" id="name" name="name" placeholder="Name" class="form-control" value="<%= @task.name %>">
-+                      </div>
-+                    </div>
-+
-+                    <!-- Label and input for address -->
-+                   <!--  <div class="form-group">
-+                      <label for="address" class="col-sm-2 control-label">
-+                        Address
-+                      </label>
-+                      <div class="col-sm-10">
-+                        <input type="text" id="address" name="address" placeholder="Address" class="form-control" value="<%= @venue.address %>">
-+                      </div>
-+                    </div> -->
-+
-+                    <input type="hidden" name="category_id" value="<%= @category.id %>">
-+
-+                    <div class="form-group">
-+                      <div class="col-sm-offset-2 col-sm-10">
-+                        <button class="btn btn-success">
-+                          Create Category
-+                        </button>
-+                        or
-+                        <a href="/category">Cancel</a>
-+                      </div>
-+                    </div>
-+                  </form>
-+                </div>
-+              </div>
-+            </div>
-+          </div>
-+
-+          <!-- End responsive panel example -->
-+
-+        </li>
 
-            </ul>
-          </div>
-        </div>
+                          <!-- Label and input for task_name -->
+                          <div class="form-group">
+                           <label for="task_name" class="col-sm-2 control-label">
+                            Task Name
+                          </label>
+                          <div class="col-sm-10">
+                            <textarea id="task_name" name="task_name" placeholder="I want to..." class="form-control" rows="3"><%= @task.task_name %></textarea>
+                          </div>
+                        </div>
+
+                        <!-- Label and input for high_priority -->
+                        <div class="form-group">
+                          <label for="high_priority" class="col-sm-2 control-label"> Priority?
+                          </label>
+                          <div class="col-sm-10">
+                            <div class="checkbox">
+                              <label for="high_priority">
+                                <input type="checkbox" id="high_priority" name="high_priority" value="1" <%= "checked" if @task.high_priority %>>
+                                Yes
+                              </label>
+                            </div>
+                          </div>
+                        </div>
+
+                        <!-- Label and input for due_date -->
+                        <div class="form-group">
+                          <label for="due_date" class="col-sm-2 control-label">
+                           Due date
+                         </label>
+                         <div class="col-sm-10">
+                          <div class='input-group date' id='datetimepicker1'>
+                            <input type='text' class="form-control" name="due_date" id="due_date" value="<%= @task.due_date %>">
+                            <span class="input-group-addon">
+                              <i class="glyphicon glyphicon-calendar"></i>
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+                      <script type="text/javascript">
+                        $(function () {
+                          $('#datetimepicker1').datetimepicker();
+                        });
+                      </script>
+
+
+                      <!-- Label and input for notes -->
+                      <div class="form-group">
+                        <label for="notes" class="col-sm-2 control-label">
+                          Notes
+                        </label>
+                        <div class="col-sm-10">
+                          <textarea id="notes" name="notes" placeholder="Notes" class="form-control" rows="3"><%= @task.notes %></textarea>
+                        </div>
+                      </div>
+
+<input type="hidden" name="category_id" value="<%= @category.id %>">
+
+                      <div class="form-group">
+                        <div class="col-sm-offset-2 col-sm-10">
+                          <button class="btn btn-success">
+                            Create Task
+                          </button>
+                          or
+                          <a href="/tasks">Cancel</a>
+                        </div>
+                      </div>
+
+                    </form>
+                  </div>
+                </div>
+              </div>
+            </div>
+           </li>
+
+        </ul>
       </div>
     </div>
   </div>
+</div>
+</div>
 </div>
 
 <!-- End responsive panel example -->
